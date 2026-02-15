@@ -40,9 +40,9 @@ export const authConfig: NextAuthConfig = {
         const userKey = `user:${email}`;
         const exists = await r.exists(userKey);
         if (!exists) {
-          await r.hset(userKey, 'createdAt', new Date().toISOString());
+          await r.hset(userKey, { createdAt: new Date().toISOString() });
         }
-        await r.hset(userKey, 'lastLogin', new Date().toISOString());
+        await r.hset(userKey, { lastLogin: new Date().toISOString() });
 
         return { id: email, email, name: email.split('@')[0] };
       },

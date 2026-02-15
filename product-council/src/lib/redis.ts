@@ -47,11 +47,11 @@ function createMockRedis(): Redis {
       const sorted = (store.get(key) as Array<{score: number; member: string}>) || [];
       return sorted.slice(start, stop + 1).map(s => s.member);
     },
-    hset: async (key: string, field: string, value: unknown) => {
+    hset: async (key: string, fieldValues: Record<string, unknown>) => {
       const hash = (store.get(key) as Record<string, unknown>) || {};
-      hash[field] = value;
+      Object.assign(hash, fieldValues);
       store.set(key, hash);
-      return 1;
+      return Object.keys(fieldValues).length;
     },
     hgetall: async (key: string) => (store.get(key) as Record<string, unknown>) ?? null,
     exists: async (key: string) => store.has(key) ? 1 : 0,
