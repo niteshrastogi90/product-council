@@ -75,12 +75,13 @@ export default function HomePage() {
       </section>
 
       {/* Query Input */}
-      <section className="relative z-10 max-w-2xl mx-auto px-4 pb-8">
+      <section className="relative z-10 max-w-2xl mx-auto px-4 pb-4">
         <QueryInput
           onSubmit={handleSubmit}
           isLoading={isLoading}
           placeholder="Ask a product question — e.g., 'How do I know if we've achieved product-market fit?'"
         />
+        <p className="text-center text-xs text-slate-500 mt-3">No sign-up required. Just ask.</p>
       </section>
 
       {/* Example Questions */}

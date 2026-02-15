@@ -10,16 +10,9 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    // Get authenticated user
+    // Get authenticated user (optional — guests can use the council)
     const session = await auth();
-    const userEmail = session?.user?.email;
-
-    if (!userEmail) {
-      return new Response(
-        JSON.stringify({ error: 'Not authenticated.' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+    const userEmail = session?.user?.email || null;
 
     const body: CouncilRequest = await request.json();
 
@@ -50,9 +43,9 @@ export async function POST(request: NextRequest) {
             controller.enqueue(encoder.encode(sseData));
           }
 
-          // Save completed session to Redis, associated with the user
+          // Save completed session to Redis (only for authenticated users)
           const completeEvent = allEvents.find(e => e.type === 'complete');
-          if (completeEvent) {
+          if (completeEvent && userEmail) {
             const sessionData = {
               id: sessionId,
               userEmail,

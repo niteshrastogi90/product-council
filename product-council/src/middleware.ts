@@ -3,10 +3,11 @@ import { NextResponse } from 'next/server';
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth?.user;
-  const isProtectedPage = req.nextUrl.pathname.startsWith('/council') ||
-    req.nextUrl.pathname.startsWith('/history');
-  const isProtectedApi = req.nextUrl.pathname.startsWith('/api/council') ||
-    req.nextUrl.pathname.startsWith('/api/sessions');
+
+  // Council pages and API are open to all (guest access)
+  // Only history and session APIs require authentication
+  const isProtectedPage = req.nextUrl.pathname.startsWith('/history');
+  const isProtectedApi = req.nextUrl.pathname.startsWith('/api/sessions');
 
   if (!isLoggedIn && isProtectedPage) {
     const loginUrl = new URL('/login', req.nextUrl.origin);
@@ -22,5 +23,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ['/council/:path*', '/history/:path*', '/api/council/:path*', '/api/sessions/:path*'],
+  matcher: ['/history/:path*', '/api/sessions/:path*'],
 };
