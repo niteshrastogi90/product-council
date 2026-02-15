@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { getRedis, checkRateLimit } from './redis';
-import crypto from 'crypto';
 
 // Since we don't have a DB adapter, we implement a custom email-based
 // auth flow: user submits email → we send magic link → user clicks it
@@ -89,8 +88,9 @@ export async function sendMagicLink(email: string): Promise<{ ok: boolean; error
     return { ok: false, error: 'Too many attempts. Please wait a few minutes.' };
   }
 
-  // Generate token
-  const token = crypto.randomBytes(32).toString('hex');
+  // Generate token (dynamic import to avoid Edge Runtime warning in middleware)
+  const { randomBytes } = await import('crypto');
+  const token = randomBytes(32).toString('hex');
 
   // Store in Redis with 10-min TTL
   const r = getRedis();
