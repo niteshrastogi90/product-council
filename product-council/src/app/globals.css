@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-primary: #4263eb;
+  --brand-dark: #364fc7;
+  --bg-primary: #fafbfc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Speaking animation for agent cards */
+@keyframes speaking {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66, 99, 235, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(66, 99, 235, 0.2); }
+}
+
+.agent-speaking {
+  animation: speaking 1.5s ease-in-out infinite;
+}
+
+/* Streaming text cursor */
+.streaming-cursor::after {
+  content: '▊';
+  animation: blink 1s step-end infinite;
+  color: var(--brand-primary);
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Markdown styling inside synthesis */
+.synthesis-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.synthesis-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.synthesis-content li {
+  margin: 0.25rem 0;
+}
+
+.synthesis-content strong {
+  font-weight: 600;
+}
+
+.synthesis-content a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+}
