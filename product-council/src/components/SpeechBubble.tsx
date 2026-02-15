@@ -16,32 +16,32 @@ export default function SpeechBubble({ agent, content, role, isStreaming, speake
   const color = isLenny ? null : getSpeakerColor(speakerIndex);
 
   return (
-    <div className={cn("animate-fade-in mb-4", isLenny && "px-2")}>
+    <div className={cn("animate-fade-in mb-4", isLenny && "px-1")}>
       <div className="flex items-center gap-2 mb-1.5">
         <div className={cn(
           "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0",
-          isLenny ? "bg-brand-600" : (color?.dot || "bg-gray-400")
+          isLenny ? "bg-gradient-to-br from-brand-500 to-purple-500" : (color?.dot || "bg-surface-300")
         )}>
           {agent.charAt(0)}
         </div>
         <span className={cn(
           "text-sm font-semibold",
-          isLenny ? "text-brand-700" : "text-gray-800"
+          isLenny ? "text-brand-400" : "text-slate-300"
         )}>
           {isLenny ? 'Lenny' : agent}
         </span>
         {isLenny && (
-          <span className="text-xs text-brand-500 font-medium">Moderator</span>
+          <span className="text-xs text-brand-500/70 font-medium">Moderator</span>
         )}
       </div>
       <div className={cn(
-        "ml-8 rounded-lg px-4 py-3",
+        "ml-8 rounded-xl px-4 py-3",
         isLenny
-          ? "bg-brand-50 border border-brand-100"
-          : `${color?.bg || 'bg-gray-50'} border ${color?.border || 'border-gray-200'}`,
+          ? "bg-brand-500/10 border border-brand-500/15"
+          : `${color?.bg || 'bg-surface-100'} border ${color?.border || 'border-white/5'}`,
       )}>
         <p className={cn(
-          "text-sm leading-relaxed text-gray-800",
+          "text-sm leading-relaxed text-slate-300",
           isStreaming && "streaming-cursor"
         )}>
           {content}

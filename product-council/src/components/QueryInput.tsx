@@ -14,7 +14,6 @@ export default function QueryInput({ onSubmit, isLoading, placeholder }: QueryIn
   const [query, setQuery] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea
   useEffect(() => {
     const el = textareaRef.current;
     if (el) {
@@ -30,7 +29,7 @@ export default function QueryInput({ onSubmit, isLoading, placeholder }: QueryIn
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
     }
@@ -38,44 +37,45 @@ export default function QueryInput({ onSubmit, isLoading, placeholder }: QueryIn
 
   return (
     <div className="relative">
-      <textarea
-        ref={textareaRef}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder || "Ask the Product Council a question..."}
-        disabled={isLoading}
-        rows={2}
-        className={cn(
-          "w-full px-4 py-3 pr-14 rounded-xl border border-gray-200 bg-white",
-          "text-gray-900 placeholder:text-gray-400 resize-none",
-          "focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent",
-          "transition-all duration-200",
-          isLoading && "opacity-60 cursor-not-allowed"
-        )}
-      />
-      <button
-        onClick={handleSubmit}
-        disabled={query.trim().length < 10 || isLoading}
-        className={cn(
-          "absolute right-3 bottom-3 p-2 rounded-lg transition-all duration-200",
-          query.trim().length >= 10 && !isLoading
-            ? "bg-brand-600 text-white hover:bg-brand-700 shadow-sm"
-            : "bg-gray-100 text-gray-400 cursor-not-allowed"
-        )}
-        title="Submit (Cmd+Enter)"
-      >
-        {isLoading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
-        ) : (
-          <Send className="w-5 h-5" />
-        )}
-      </button>
-      <div className="mt-1 flex justify-between px-1">
-        <span className="text-xs text-gray-400">
+      <div className="relative flex items-end glass rounded-2xl focus-within:ring-2 focus-within:ring-brand-500/40 focus-within:border-brand-500/30 transition-all duration-300">
+        <textarea
+          ref={textareaRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder || "Ask the Product Council a question..."}
+          disabled={isLoading}
+          rows={1}
+          className={cn(
+            "flex-1 px-4 py-3.5 bg-transparent text-slate-100 placeholder:text-slate-500 resize-none",
+            "focus:outline-none",
+            "transition-all duration-200",
+            isLoading && "opacity-60 cursor-not-allowed"
+          )}
+        />
+        <button
+          onClick={handleSubmit}
+          disabled={query.trim().length < 10 || isLoading}
+          className={cn(
+            "m-2 p-2.5 rounded-xl transition-all duration-200 flex-shrink-0",
+            query.trim().length >= 10 && !isLoading
+              ? "bg-brand-600 text-white hover:bg-brand-500 shadow-lg shadow-brand-600/20"
+              : "bg-surface-200 text-slate-500 cursor-not-allowed"
+          )}
+          title="Submit (Enter)"
+        >
+          {isLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Send className="w-5 h-5" />
+          )}
+        </button>
+      </div>
+      <div className="mt-1.5 flex justify-between px-1">
+        <span className="text-xs text-slate-600">
           {query.trim().length < 10 && query.length > 0 ? `${10 - query.trim().length} more characters needed` : ''}
         </span>
-        <span className="text-xs text-gray-400">Cmd+Enter to submit</span>
+        <span className="text-xs text-slate-600">Shift+Enter for new line</span>
       </div>
     </div>
   );
